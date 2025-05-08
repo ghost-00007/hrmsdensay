@@ -1,18 +1,55 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Deploy HRMS
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  Explore-GitHub-Actions:
+  deploy:
     runs-on: ubuntu-latest
+
+    env:
+      PROJECT_NAME: "hrmdensaytest"
+      GIT_REPO: "https://github.com/ghost-00007/hrmsdensay.git"
+      PROJECT_FOLDER: "${{ env.PROJECT_NAME }}"
+      WWW_PATH: "/var/www"
+      NGINX_CONF_PATH: "/etc/nginx/sites-available/${{ env.PROJECT_NAME }}"
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Clone or Pull Repository
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          if [ ! -d "${{ env.PROJECT_FOLDER }}/.git" ]; then
+            echo "Cloning repository into ${PROJECT_FOLDER}..."
+            git clone ${{ env.GIT_REPO }} ${{ env.PROJECT_FOLDER }}
+          else
+            echo "Repository already cloned. Pulling latest changes..."
+            cd ${{ env.PROJECT_FOLDER }} && git pull
+          fi
+
+      - name: Copy to /var/www
+        run: sudo cp -r ${{ env.PROJECT_FOLDER }} ${{ env.WWW_PATH }}/
+
+      - name: Update Package List
+        run: sudo apt update
+
+      - name: Create Nginx Config
+        run: |
+          echo "
+          server {
+              listen 80;
+              server_name localhost;
+              root ${{ env.WWW_PATH }}/${{ env.PROJECT_NAME }};
+              index index.html;
+
+              location / {
+                  try_files \$uri /index.html;
+              }
+
+              error_log /var/log/nginx/frontend_error.log;
+              access_log /var/log/nginx/frontend_access.log;
+          }" | sudo tee ${{ env.NGINX_CONF_PATH }}
+

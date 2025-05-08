@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0cd2373c.css",
+    "main.js": "/static/js/main.2ed84451.js",
+    "static/js/213.084fd777.chunk.js": "/static/js/213.084fd777.chunk.js",
+    "static/js/455.d9b2dfd3.chunk.js": "/static/js/455.d9b2dfd3.chunk.js",
+    "static/media/LoginImage.jpg": "/static/media/LoginImage.534553f1c070a7989e09.jpg",
+    "static/media/Palatino.ttf": "/static/media/Palatino.1a90fc7b839078a04924.ttf",
+    "static/media/logo.png": "/static/media/logo.56b372c4628cb3332cf2.png",
+    "static/media/HRMS_IMG.png": "/static/media/HRMS_IMG.c90227149df4080df247.png",
+    "static/media/densay.jpg": "/static/media/densay.60b2b9d14315364c8264.jpg",
+    "static/media/cropped-emf-logo-removebg-preview.png": "/static/media/cropped-emf-logo-removebg-preview.efd925eff050406a91a3.png",
+    "static/media/404.svg": "/static/media/404.bdf1c60c297dc6528f56fe6a382dacdf.svg",
+    "static/media/Singn.png": "/static/media/Singn.ce63ef3bcb3607f9edae.png",
+    "static/media/manager.svg": "/static/media/manager.a62ef174eb311054c309258dc2c582b8.svg",
+    "static/media/Keel.png": "/static/media/Keel.44c22f728ff081b1e2fa.png",
+    "static/media/loading.svg": "/static/media/loading.72d65576e931a36c4c43a0240526bb94.svg",
+    "index.html": "/index.html",
+    "main.0cd2373c.css.map": "/static/css/main.0cd2373c.css.map",
+    "main.2ed84451.js.map": "/static/js/main.2ed84451.js.map",
+    "213.084fd777.chunk.js.map": "/static/js/213.084fd777.chunk.js.map",
+    "455.d9b2dfd3.chunk.js.map": "/static/js/455.d9b2dfd3.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0cd2373c.css",
+    "static/js/main.2ed84451.js"
+  ]
+}

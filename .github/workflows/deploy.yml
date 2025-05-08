@@ -12,7 +12,6 @@ jobs:
     env:
       PROJECT_NAME: "hrmdensaytest"
       GIT_REPO: "https://github.com/ghost-00007/hrmsdensay.git"
-      PROJECT_FOLDER: "${{ env.PROJECT_NAME }}"
       WWW_PATH: "/var/www"
       NGINX_CONF_PATH: "/etc/nginx/sites-available/${{ env.PROJECT_NAME }}"
 
@@ -22,16 +21,16 @@ jobs:
 
       - name: Clone or Pull Repository
         run: |
-          if [ ! -d "${{ env.PROJECT_FOLDER }}/.git" ]; then
-            echo "Cloning repository into ${PROJECT_FOLDER}..."
-            git clone ${{ env.GIT_REPO }} ${{ env.PROJECT_FOLDER }}
+          if [ ! -d "${PROJECT_NAME}/.git" ]; then
+            echo "Cloning repository into ${PROJECT_NAME}..."
+            git clone $GIT_REPO $PROJECT_NAME
           else
             echo "Repository already cloned. Pulling latest changes..."
-            cd ${{ env.PROJECT_FOLDER }} && git pull
+            cd $PROJECT_NAME && git pull
           fi
 
       - name: Copy to /var/www
-        run: sudo cp -r ${{ env.PROJECT_FOLDER }} ${{ env.WWW_PATH }}/
+        run: sudo cp -r $PROJECT_NAME $WWW_PATH/
 
       - name: Update Package List
         run: sudo apt update
@@ -42,7 +41,7 @@ jobs:
           server {
               listen 80;
               server_name localhost;
-              root ${{ env.WWW_PATH }}/${{ env.PROJECT_NAME }};
+              root $WWW_PATH/$PROJECT_NAME;
               index index.html;
 
               location / {
@@ -51,5 +50,10 @@ jobs:
 
               error_log /var/log/nginx/frontend_error.log;
               access_log /var/log/nginx/frontend_access.log;
-          }" | sudo tee ${{ env.NGINX_CONF_PATH }}
+          }" | sudo tee $NGINX_CONF_PATH
 
+      - name: Test Nginx Config
+        run: sudo nginx -t
+
+      - name: Restart Nginx
+        run: sudo systemctl restart nginx
